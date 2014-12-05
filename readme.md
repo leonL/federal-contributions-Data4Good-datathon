@@ -1,0 +1,1 @@
+Analysis of individual monetary contributions made to Canada's major political parites (Conservative, Liberal, NDP, Green, Bloc) from 2004 to 2013.
