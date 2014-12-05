@@ -1,5 +1,11 @@
-source("../lib/constants.R")
 library("GetoptLong")
+
+official_party_names <-
+  c(Bloc="Bloc Québécois",
+    Conservative="Conservative Party of Canada",
+    Green="Green Party of Canada",
+    Liberal="Liberal Party of Canada",
+    NDP="New Democratic Party")
 
 subfolders <- names(official_party_names)
 
@@ -21,5 +27,5 @@ for(subfolder in subfolders) {
 }
 
 write.csv(
-  data_set, file=all_data_csv_file_name, row.names=FALSE
+  data_set, file="all_contributions_2004_to_2013.csv", row.names=FALSE
 )
