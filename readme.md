@@ -17,9 +17,7 @@ Individual contributions make up a significant proportion of how federal parties
 
 Generally speaking, every Canadian is limited to contributing $1200 per year to any one federal party, as well as to any of its EDAs (electoral-district/riding associations). This limit has changed incrementally over the past decade; for the detailed limits per year, see the 'Contibution limit table' PDF in the 'docs' folder.
 
-### Nuances and Loopholes
-
-A given Canadian is not limited to how many EDAs she can contribute to in a given year, meaning they are within their legal right to give up to the contribution limit to both the federal level of a party and to each of its 300+ EDAs, a total that would exceed $300,000.
+### Qualifitications
 
 Political parties must account for the contributoins they recieve with Elections Canada only if they are in excess of $200. Accounting for smaller contributions is entirely voluntary.
 
