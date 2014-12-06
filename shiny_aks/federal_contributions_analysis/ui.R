@@ -10,7 +10,16 @@ shinyUI(fluidPage(
       column(12,
              fluidRow(
                column(8,
-                      htmlOutput('table')
+                      fluidRow(
+                        htmlOutput('table')
+                      ),
+                      
+                      br(),
+                      br(),
+                      
+                      fluidRow(
+                        showOutput("graph", "highcharts")
+                      )
                ),
                column(2,
                       wellPanel(
