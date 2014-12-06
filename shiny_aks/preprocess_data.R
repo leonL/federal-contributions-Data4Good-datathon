@@ -4,7 +4,7 @@ library(dplyr)
 
 setwd("~/Projects/datathon/federal-contributions-analysis/shiny_aks/")
 
-data <- read.csv('../munged_data/all_contributions_2004_to_2013.csv')
+data <- read.csv('../munged_data/all_contributions_2004_to_2013.csv', stringsAsFactors = FALSE)
 
 data <- data.table(data)
 
