@@ -1,4 +1,4 @@
-#cb_table, #table_prediction {
+#table {
 
   background-color: white; 
   width: 100%; 
@@ -7,24 +7,3 @@
   text-align: right;
 
 }
-
-#table_calendar_events {
-  
-  background-color: white; 
-  width: 100%; 
-  white-space: nowrap;
-  font-family: "Calibri";
-  
-}
-
-#table_calendar_events th, #table_calendar_events td {
-  
-  text-align: right
-  
-}
-
-#table_calendar_events th:nth-child(8), #table_calendar_events td:nth-child(8) {
-  
-  text-align: left
-  
-} 

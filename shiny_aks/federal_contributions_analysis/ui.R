@@ -1,11 +1,16 @@
 shinyUI(fluidPage(
+   
+  tagList(
+    tags$head(tags$link(rel="stylesheet", type="text/css", href="style.css")
+    )
+  ),
   
   fluidRow(
     fluidRow(
       column(12,
              fluidRow(
                column(8,
-                      h4('a8')
+                      htmlOutput('table')
                ),
                column(2,
                       wellPanel(
@@ -24,11 +29,13 @@ shinyUI(fluidPage(
                ),
                column(2,
                       wellPanel(
-                        selectizeInput('date_coh', 'Choose Date Cohort', c('Year', 'Year-Month', 'Year-Month_Day'), multiple=FALSE),
+                        selectizeInput('date_coh', 'Choose Date Cohort', c('None', 'Year', 'Year-Month', 'Year-Month-Day'), multiple=FALSE),
                         selectizeInput('coh1', 'Cohort 1', cohort_selection, multiple=FALSE),
                         selectizeInput('coh2', 'Cohort 2', cohort_selection, multiple=FALSE),
                         selectizeInput('coh3', 'Cohort 3', cohort_selection, multiple=FALSE),
-                        selectizeInput('coh3', 'Cohort 3', cohort_selection, multiple=FALSE)
+                        selectizeInput('coh4', 'Cohort 4', cohort_selection, multiple=FALSE),
+                        radioButtons('aggregation', label = 'Aggregate vs. Individual Data', choices = c('Aggregated', 'Individual'), selected = 'Aggregated'),
+                        sliderInput('number_records', 'Select A Number of Records', min = 1, max = 50, value = 5)
                         
                         
                         )
