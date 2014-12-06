@@ -16,7 +16,10 @@ nice_names <- list(party_name = 'Party Name',
                    total_contribution = 'Total Cont.',
                    date = 'Date',
                    date_year = 'Date-Year',
-                   date_year_month = 'Date-Month'
+                   date_year_month = 'Date-Month',
+                   contributor_id = 'Contributor ID',
+                   full_name = 'Full Name',
+                   contribution_amount_dollars = 'Amount'
                    )
 
 cohort_selection <- c('None', 
