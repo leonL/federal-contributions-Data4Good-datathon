@@ -1,0 +1,118 @@
+---
+title: "script1"
+author: "Polong Lin"
+date: "December 6, 2014"
+output: html_document
+---
+
+## INIT
+- Initiating working directory and dataset
+- add "contribution_amount_dollars" column in dollars
+```{r init}
+setwd("/Users//polong//Documents/federal-contributions-analysis/munged_data/")
+dataset <- read.csv("all_contributions_2004_to_2013.csv", stringsAsFactors = FALSE)
+dataset$contribution_amount_dollars <- dataset$contribution_amount/100
+source("postal_code_to_city.R")
+head(dataset)
+
+```
+
+-remove negative and blank contributions
+```{r remove}
+nrow.before <- nrow(dataset)
+dataset <- dataset[dataset$flag.negative_contrib == FALSE & 
+                       dataset$flag.blank_contrib == FALSE,]
+```
+-`nrow(dataset) - nrow.before` rows with NEGATIVE or BLANK contribution amounts **removed**.
+
+-set annual limits as a dataframe
+```{r annuallimits}
+annual_limits <- data.frame(c(5000, 1000, 1000, 1000),
+                            c(5100, 1000, 1000, 1000),
+                            c(1100, NA, NA, NA),
+                            c(1100, NA, NA, NA),
+                            c(1100, NA, NA, NA),
+                            c(1100, NA, NA, NA),
+                            c(1100, NA, NA, NA),
+                            c(1100, NA, NA, NA),
+                            c(1200, NA, NA, NA),
+                            c(1200, NA, NA, NA),
+                            c(1200, NA, NA, NA))
+names(annual_limits) <- 2004:2014
+rownames(annual_limits) <- c("Individuals","Corporations","Trade Unions","Assoc. 405.3(3)")
+```
+
+## Summary
+
+```{r summary1}
+summary(dataset)
+```
+###Results:
+-n. observations: `nrow(dataset)`
+
+## Create columns for year and month of donation
+```{r year}
+dataset$contribution_date.adjusted <- as.Date(dataset$contribution_date.adjusted)
+
+dataset$year <- as.numeric(format(dataset$contribution_date.adjusted, "%Y"))
+dataset$month <- as.numeric(format(dataset$contribution_date.adjusted, "%m"))
+dataset$date <- as.numeric(format(dataset$contribution_date.adjusted, "%Y%m%d"))
+
+```
+
+
+## Donations per group by year
+
+```{r donations}
+
+
+don_per_party_by_year <- aggregate(contribution_amount_dollars ~ year +month + party_name, dataset, sum)
+
+require(ggplot2)
+ggplot() + 
+  coord_cartesian() +
+  scale_x_continuous() +
+  scale_y_continuous() +
+  scale_color_hue() +
+  facet_wrap(~party_name) +
+  layer(
+    data=don_per_party_by_year, 
+    mapping=aes(x=month, y=contribution_amount_dollars/1000, color=party_name), 
+    stat="identity", 
+    stat_params=list(), 
+    geom="line", 
+    geom_params=list(), 
+    position=position_jitter()
+  )
+```
+
+
+## Donations per group by DAY
+
+```{r donations}
+#head(dataset)
+head(dataset)
+
+donations_per_party_by_day <- aggregate(contribution_amount_dollars ~ contribution_date.adjusted + party_name, dataset, sum)
+
+str(donations_per_party_by_day)
+donations_per_party_by_day$contribution_date.adjusted <- as.factor(donations_per_party_by_day$contribution_date.adjusted)
+
+
+require(ggplot2)
+ggplot() + 
+  coord_cartesian() +
+  scale_x_continuous() +
+  scale_y_continuous() +
+  scale_color_hue() +
+  #facet_wrap(~party_name) +
+  layer(
+    data=donations_per_party_by_day, 
+    mapping=aes(x=as.factor(contribution_date.adjusted), y=contribution_amount_dollars/1000, color=party_name), 
+    stat="identity", 
+    stat_params=list(), 
+    geom="line", 
+    geom_params=list(), 
+    position=position_jitter()
+  )
+```
