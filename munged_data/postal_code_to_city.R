@@ -1,7 +1,7 @@
 ## Scrape a list of postal codes to their corresponding city names
 
 #LOAD contributions dataset
-setwd("/Users//polong//Documents/federal-contributions-analysis/munged_data/")
+#setwd("/Users//polong//Documents/federal-contributions-analysis/munged_data/")
 dataset <- read.csv("all_contributions_2004_to_2013.csv", stringsAsFactors = FALSE)
 
 #LOAD postal-city dataset
