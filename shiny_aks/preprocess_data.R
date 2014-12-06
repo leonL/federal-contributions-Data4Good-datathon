@@ -9,4 +9,6 @@ data <- data %>% mutate(date=contribution_date.adjusted,
                         date_year = year(contribution_date.adjusted),
                         date_year_month = paste(date_year, date_month, sep=""))
 
+data$date <- as.Date(data$date)
+
 data$contribution_amount_dollars <- data$contribution_amount/100
