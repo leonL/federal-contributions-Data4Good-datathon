@@ -1,9 +1,12 @@
 ---
 title: "script1"
-author: "Polong Lin"
+author: "Polong Lin & SangHee Park"
 date: "December 6, 2014"
 output: html_document
 ---
+```{r}
+knitr::opts_chunk$set(comment="", cache=TRUE)
+```
 
 ## INIT
 - Initiating working directory and dataset
@@ -52,52 +55,26 @@ summary(dataset)
 
 ## Create columns for year and month of donation
 ```{r year}
-dataset$contribution_date.adjusted <- as.Date(dataset$contribution_date.adjusted)
+
+dataset$contribution_date.adjusted <- as.Date(dataset$contribution_date.adjusted, "%Y-%m-%d")
+
 
 dataset$year <- as.numeric(format(dataset$contribution_date.adjusted, "%Y"))
+head(dataset$year)
+
 dataset$month <- as.numeric(format(dataset$contribution_date.adjusted, "%m"))
-dataset$date <- as.numeric(format(dataset$contribution_date.adjusted, "%Y%m%d"))
+
+dataset$day <- as.numeric(format(dataset$contribution_date.adjusted, "%d"))
 
 ```
 
 
-## Donations per group by year
+## Donations by date, plotted
+```{r donations_by_date}
+dataset$contribution_amount_dollars <- dataset$contribution_amount/100
+don_per_party_by_date <- aggregate(contribution_amount_dollars ~ year + month + day + party_name, dataset, sum)
 
-```{r donations}
-
-
-don_per_party_by_year <- aggregate(contribution_amount_dollars ~ year +month + party_name, dataset, sum)
-
-require(ggplot2)
-ggplot() + 
-  coord_cartesian() +
-  scale_x_continuous() +
-  scale_y_continuous() +
-  scale_color_hue() +
-  facet_wrap(~party_name) +
-  layer(
-    data=don_per_party_by_year, 
-    mapping=aes(x=month, y=contribution_amount_dollars/1000, color=party_name), 
-    stat="identity", 
-    stat_params=list(), 
-    geom="line", 
-    geom_params=list(), 
-    position=position_jitter()
-  )
-```
-
-
-## Donations per group by DAY
-
-```{r donations}
-#head(dataset)
-head(dataset)
-
-donations_per_party_by_day <- aggregate(contribution_amount_dollars ~ contribution_date.adjusted + party_name, dataset, sum)
-
-str(donations_per_party_by_day)
-donations_per_party_by_day$contribution_date.adjusted <- as.factor(donations_per_party_by_day$contribution_date.adjusted)
-
+#don_per_party_by_date$date <- as.Date(format(as.Date(don_per_party_by_date, "%Y %m %d")))
 
 require(ggplot2)
 ggplot() + 
@@ -107,8 +84,62 @@ ggplot() +
   scale_color_hue() +
   #facet_wrap(~party_name) +
   layer(
-    data=donations_per_party_by_day, 
-    mapping=aes(x=as.factor(contribution_date.adjusted), y=contribution_amount_dollars/1000, color=party_name), 
+    data=don_per_party_by_date, 
+    mapping=aes(x=year, y=contribution_amount_dollars/1000, color=party_name), 
+    stat="identity", 
+    stat_params=list(), 
+    geom="line", 
+    geom_params=list(), 
+    position=position_jitter()
+  )
+
+```
+
+
+## Removing event-based donations
+
+### Removing Year-End donations (December 31)
+```{r yearend}
+don_per_party_by_date <- don_per_party_by_date[don_per_party_by_date$month != 12 & don_per_party_by_date$day != 31,]
+
+ggplot() + 
+  coord_cartesian() +
+  scale_x_continuous() +
+  scale_y_continuous() +
+  scale_color_hue() +
+  facet_wrap(~party_name) +
+  layer(
+    data=don_per_party_by_date, 
+    mapping=aes(x=year, y=contribution_amount_dollars/1000, color=party_name), 
+    stat="identity", 
+    stat_params=list(), 
+    geom="line", 
+    geom_params=list(), 
+    position=position_jitter()
+  )
+
+head(don_per_party_by_date[order(don_per_party_by_date$contribution_amount_dollars, decreasing = TRUE),], n = 20)
+
+dataset[dataset$full_name == "Gordon Rawlinson",]
+
+
+```
+
+
+## Donations by amount
+
+```{r donations_by_amt}
+
+require(ggplot2)
+ggplot() + 
+  coord_cartesian() +
+  scale_x_continuous() +
+  scale_y_continuous() +
+  scale_color_hue() +
+  facet_wrap(~party_name) +
+  layer(
+    data=don_per_party_by_date, 
+    mapping=aes(x=month, y=contribution_amount_dollars/1000, color=party_name), 
     stat="identity", 
     stat_params=list(), 
     geom="line", 
@@ -116,3 +147,99 @@ ggplot() +
     position=position_jitter()
   )
 ```
+
+## Donations per postal code per day
+
+```{r donations}
+head(dataset)
+
+donations_by_postal_by_day <- aggregate(dataset$contribution_amount_dollars ~ dataset$postal_code + dataset$contribution_date.adjusted + dataset$party_name, dataset, sum)
+num_donations_by_postal_by_day <- aggregate(dataset$contribution_amount_dollars ~ dataset$postal_code + dataset$contribution_date.adjusted + dataset$party_name, dataset, length)
+
+head(donations_by_postal_by_day)
+head(num_donations_by_postal_by_day)
+
+head(donations_by_postal_by_day)
+
+
+
+donations_by_postal_by_day <- merge(donations_by_postal_by_day, num_donations_by_postal_by_day, by = c("dataset$postal_code", "dataset$contribution_date.adjusted", "dataset$party_name"))
+
+names(donations_by_postal_by_day) <- c("postal_code", "contribution_date.adjusted", "party_name", "contrib_amount_dollars", "n_contributions")
+
+#boxplot(donations_by_postal_by_day$n_contributions)
+
+summary(donations_by_postal_by_day)
+
+head(donations_by_postal_by_day[order(donations_by_postal_by_day$n_contributions, decreasing = TRUE),], 
+     n = 20)
+
+plot(donations_by_postal_by_day$contrib_amount_dollars, donations_by_postal_by_day$n_contributions,
+     ylab = "# of Contributions", xlab = "Total Contrib per day, PC, party")
+
+```
+
+## Look at the maximum donators - what are they doing?
+
+Generate list of "maxers":
+```{r maximum_donators}
+
+dataset_maxers <- rbind(dataset[dataset$year == 2004 & dataset$contribution_amount_dollars == 5000,], 
+                        dataset[dataset$year == 2005 & dataset$contribution_amount_dollars == 5100,],
+                        dataset[dataset$year == 2006 & dataset$contribution_amount_dollars == 5200,],
+                        dataset[dataset$year > 2007 & dataset$year < 2012 & dataset$contribution_amount_dollars == 1100,],
+                        dataset[dataset$year > 2011 & dataset$contribution_amount_dollars == 1200,])
+
+```
+
+
+## Top Overall Contributors by name
+```{r donations_by_name}
+don_by_name <- aggregate(contribution_amount_dollars ~ full_name, dataset, sum)
+
+head(don_by_name[order(don_by_name$contribution_amount_dollars, decreasing = TRUE),], n = 50)
+
+```
+
+## Remove over-limit donations
+-remove year-end donations
+```{r removing_overlimit_donations}
+dataset_within_limit <- rbind(dataset[dataset$year == 2004 & dataset$contribution_amount_dollars <= 5000,], 
+                        dataset[dataset$year == 2005 & dataset$contribution_amount_dollars <= 5100,],
+                        dataset[dataset$year == 2006 & dataset$contribution_amount_dollars <= 5200,],
+                        dataset[dataset$year >= 2007 & dataset$year <= 2011 & dataset$contribution_amount_dollars <= 1100,],
+                        dataset[dataset$year > 2011 & dataset$contribution_amount_dollars <= 1200,])
+
+don_within_limit <- aggregate(contribution_amount_dollars ~ year + month + day + party_name, dataset_within_limit, sum)
+
+don_within_limit <- don_within_limit[don_within_limit$month != 12 & don_within_limit$day != 31,]
+
+
+
+require(ggplot2)
+ggplot() + 
+  coord_cartesian() +
+  scale_x_continuous() +
+  scale_y_continuous() +
+  scale_color_hue() +
+  facet_wrap(~party_name) +
+  layer(
+    data=don_within_limit, 
+    mapping=aes(x=year, y=contribution_amount_dollars/1000, color=party_name), 
+    stat="identity", 
+    stat_params=list(), 
+    geom="line", 
+    geom_params=list(), 
+    position=position_jitter()
+  )
+
+```
+
+Outlier days:
+```{r outlierdays}
+don_within_limit[don_within_limit$contribution_amount_dollars > 400000,]
+```
+
+On November 30, 2006, there were `r nrow(dataset_within_limit[dataset_within_limit$date == "2006-11-30"& dataset_within_limit$contribution_amount_dollars == "919.98",])` contributions of exactly $919.98. High profile supporters[edit]
+"Former New Brunswick Premier Frank McKenna, considered the leading contender until he announced he was not running in the race, had donated $3000 to Brison's campaign in August and formally endorsed Brison on November" (http://en.wikipedia.org/wiki/Liberal_Party_of_Canada_leadership_election,_2006)
+
