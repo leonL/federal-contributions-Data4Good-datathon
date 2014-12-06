@@ -20,7 +20,7 @@ nice_names <- list(party_name = 'Party Name',
                    contributor_id = 'Contributor ID',
                    full_name = 'Full Name',
                    contribution_amount_dollars = 'Amount'
-)
+                   )
 
 cohort_selection <- c('None', 
                       'Party Name', 'Province', 'City', 'Federal Cont.', 'Riding')

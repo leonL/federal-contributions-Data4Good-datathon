@@ -1,5 +1,5 @@
 shinyUI(fluidPage(
-   
+  
   tagList(
     tags$head(tags$link(rel="stylesheet", type="text/css", href="style.css")
     )
@@ -25,7 +25,7 @@ shinyUI(fluidPage(
                         selectizeInput('city', 'City', c('All', unique(data$city)), 'All', multiple=TRUE),
                         selectizeInput('flag.blank_contrib', 'Federal Contribution', c('All', unique(data$flag.blank_contrib)), 'All', multiple=TRUE),
                         selectizeInput('target_riding', 'Riding', c('All', unique(data$target_riding)), 'All', multiple=TRUE)
-                        )                      
+                      )                      
                ),
                column(2,
                       wellPanel(
@@ -35,10 +35,12 @@ shinyUI(fluidPage(
                         selectizeInput('coh3', 'Cohort 3', cohort_selection, multiple=FALSE),
                         selectizeInput('coh4', 'Cohort 4', cohort_selection, multiple=FALSE),
                         radioButtons('aggregation', label = 'Aggregate vs. Individual Data', choices = c('Aggregated', 'Individual'), selected = 'Aggregated'),
-                        sliderInput('number_records', 'Select A Number of Records', min = 1, max = 50, value = 5)
-                        
-                        
+                        conditionalPanel(condition = 'input.aggregation=="Individual"',
+                                         sliderInput('number_records', 'Top X Contributors', min = 1, max = 50, value = 5)
                         )
+                        
+                        
+                      )
                )               
              )         
       )

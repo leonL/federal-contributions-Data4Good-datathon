@@ -95,8 +95,8 @@ shinyServer(function(input, output) {
   output$table <- renderGvis({
     data_final <- final_table_data() %>%
       data.frame() %>%
-      format_numbers(name_list = c('avg_contribution', 'total_contribution', 'n'),
-                     currency_list = c('avg_contribution', 'total_contribution'), 
+      format_numbers(name_list = c('avg_contribution', 'total_contribution', 'n', 'contribution_amount_dollars'),
+                     currency_list = c('avg_contribution', 'total_contribution', 'contribution_amount_dollars'), 
                      percentage_list = c()
                       ) %>%
       give_nice_names(nice_names)
