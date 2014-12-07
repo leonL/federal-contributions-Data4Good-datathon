@@ -19,12 +19,13 @@ shinyUI(fluidPage(
                                        start = min(data$date), 
                                        end = max(data$date), 
                                        min = min(data$date), 
-                                       max = max(data$date)),
-                        selectizeInput('party_name', 'Party Name', c('All', unique(data$party_name)), 'All', multiple=TRUE),
-                        selectizeInput('province', 'Province', c('All', unique(data$province)), 'All', multiple=TRUE),
-                        selectizeInput('city', 'City', c('All', unique(data$city)), 'All', multiple=TRUE),
-                        selectizeInput('flag.blank_contrib', 'Federal Contribution', c('All', unique(data$flag.blank_contrib)), 'All', multiple=TRUE),
-                        selectizeInput('target_riding', 'Riding', c('All', unique(data$target_riding)), 'All', multiple=TRUE)
+                                       max = max(data$date)),        
+                        
+                         selectizeInput('party_name', 'Party Name', c('All', unique(data$party_name)), 'All', multiple=TRUE),
+                         selectizeInput('province', 'Province', c('All', unique(data$province)), 'All', multiple=TRUE),
+                         selectizeInput('city', 'City', c('All', unique(data$city)), 'All', multiple=TRUE),
+                         selectizeInput('flag.blank_contrib', 'Federal Contribution', c('All', unique(data$flag.blank_contrib)), 'All', multiple=TRUE),
+                         selectizeInput('target_riding', 'Riding', c('All', unique(data$target_riding)), 'All', multiple=TRUE)
                       )                      
                ),
                column(2,
