@@ -1,5 +1,6 @@
 library(googleVis)
 library(dplyr)
+library(rCharts)
 
 load('data/data')
 
@@ -30,3 +31,20 @@ cohort_id <- c('coh1', 'coh2', 'coh3', 'coh4')
 filter_id <- c("party_name", "province", "city", "flag.blank_contrib", "target_riding")
 
 dat_filter <- c('date_coh')
+
+data_to_json <- function(data, col_to_json=NULL, col_names=NULL) {
+  
+  if(!is.null(col_to_json)) {
+    if(length(col_to_json)==1) {
+      data <- data[col_to_json] 
+    } else {
+      data <- data[,col_to_json] 
+    }
+  }
+  
+  lapply(1:nrow(data), function(i) { 
+    res <- as.list(data[i,]) 
+    names(res) <- col_names
+    return(res)
+  })
+}
