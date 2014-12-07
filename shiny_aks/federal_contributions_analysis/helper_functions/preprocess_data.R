@@ -37,7 +37,7 @@ data <- data %>% mutate(date=contribution_date.adjusted,
 
 data$contribution_amount_dollars <- data$contribution_amount/100
 
-data <- data[sample(nrow(data), 1e5),]
+#data <- data[sample(nrow(data), 1e5),]
 
 #remove special characters
 char_col <- c("party_name", "province", "city", "target_riding", "contributors_riding_name", "party_riding", "full_name")
