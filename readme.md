@@ -1,3 +1,13 @@
+About the DataThon
+==================
+
+This is a repository of all the work that came out of a [DataThon](http://www.meetup.com/DataforGood/events/218482002/) put on by [Data for Good](http://www.meetup.com/DataforGood/) on December 6th, 2014, in Toronto, Canada, at [Bitmaker Labs](http://bitmakerlabs.com/).
+
+Inspired by DataKind.org(datakind.org), Data for Good brings together leading data scientists with high impact social organizations through a comprehensive, collaborative approach that leads to shared insights, greater understanding, and positive action through "data in the service of humanity".
+
+A DataThon is a weekend event that matches up three (3) selected social organizations (that have well-defined data problems) with a team of volunteer data scientists to tackle their data-related challenges over a 24-48 hours period.  The participants are housed & fed throughout the weekend event & the results are presented to the 3 social organizations at the end of the event.  Some may refer to these types of events as "Hack-a-Thons", etc.  These events are completely free for the participants and serve to energize, educate, and provide direct benefit to the NFP/NGO organizations, as well as to enlighten social sector groups about the power of being data-driven.
+
+
 About the Data
 ==============
 
