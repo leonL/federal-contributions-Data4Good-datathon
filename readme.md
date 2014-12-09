@@ -7,6 +7,13 @@ Inspired by DataKind.org(datakind.org), Data for Good brings together leading da
 
 A DataThon is a weekend event that matches up three (3) selected social organizations (that have well-defined data problems) with a team of volunteer data scientists to tackle their data-related challenges over a 24-48 hours period.  The participants are housed & fed throughout the weekend event & the results are presented to the 3 social organizations at the end of the event.  Some may refer to these types of events as "Hack-a-Thons", etc.  These events are completely free for the participants and serve to energize, educate, and provide direct benefit to the NFP/NGO organizations, as well as to enlighten social sector groups about the power of being data-driven.
 
+Results
+-------
+
+You can find the code, analysis scripts, and final presentations delivered during the event in the repo. A deployed version of the Shiny app can be found [here](https://ayakubovich.shinyapps.io/federal_contributions_analysis/). A Tableau Public dashboard created during the DataThon is available [here](http://public.tableausoftware.com/profile/daviddou82#!/vizhome/CanadianPoliticalDonors/politicalDonations).
+
+Thanks to everyone who participated in the event. So very Data Good of you.
+
 
 About the Data
 ==============
